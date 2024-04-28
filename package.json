@@ -1,0 +1,43 @@
+{
+  "name": "serverless-async-storage",
+  "version": "1.0.0",
+  "description": "Ensure separate contexts for consecutive warm lambda executions",
+  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./plugin": {
+      "import": "./dist/plugin.js",
+      "require": "./dist/plugin.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "cleanup": "rm -rf dist",
+    "prerelease": "npm run cleanup && npm run build",
+    "release": "npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rayyan98/serverless-async-storage.git"
+  },
+  "keywords": [
+    "serverless",
+    "lambda",
+    "warm lambda",
+    "async storage",
+    "async store"
+  ],
+  "author": "rayyan98",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rayyan98/serverless-async-storage/issues"
+  },
+  "homepage": "https://github.com/Rayyan98/serverless-async-storage#readme",
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
+  }
+}
