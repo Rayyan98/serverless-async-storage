@@ -19,6 +19,9 @@
     "prerelease": "npm run cleanup && npm run build",
     "release": "npm publish --access public"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Rayyan98/serverless-async-storage.git"
