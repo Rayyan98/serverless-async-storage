@@ -1,6 +1,6 @@
 {
   "name": "serverless-async-storage",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Ensure separate contexts for consecutive warm lambda executions",
   "main": "dist/index.js",
   "exports": {
