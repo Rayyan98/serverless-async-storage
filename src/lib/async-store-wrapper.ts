@@ -6,8 +6,6 @@ export function asyncStoreWrapper(...args: unknown[]) {
   const splits = process.env.SAS_HANDLER!.split(".");
   const handlerName = splits.pop()!;
   const filePath = splits.join(".");
-  const fileModule = require(`${filePath}`);
-  const handler = fileModule[handlerName];
 
   return asyncLocalStorage.run(
     StoreFactory.getStore(
@@ -16,6 +14,8 @@ export function asyncStoreWrapper(...args: unknown[]) {
         : StoreTypeEnum.PerpetualStore
     ),
     () => {
+      const fileModule = require(`${filePath}`);
+      const handler = fileModule[handlerName];    
       return handler(...args);
     }
   );
