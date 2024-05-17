@@ -13,16 +13,25 @@ export class AsyncStoragePlugin {
   }
 
   init(offline = false) {
-    this.serverless.service.getAllFunctions().forEach((functionName: string) => {
-      const functionObject = this.serverless.service.getFunction(functionName);
+    this.serverless.service
+      .getAllFunctions()
+      .forEach((functionName: string) => {
+        const functionObject =
+          this.serverless.service.getFunction(functionName);
 
-      const originalHandler = functionObject.handler;
-      const serverlessPath = this.serverless.config.servicePath;
+        const originalHandler = functionObject.handler;
+        const serverlessPath = this.serverless.config.servicePath;
 
-      functionObject.handler = `serverless-async-storage.asyncStoreWrapper`;
-      functionObject.environment = functionObject.environment || {};
+        functionObject.handler = `serverless-async-storage.asyncStoreWrapper`;
+        functionObject.environment = functionObject.environment || {};
 
-      functionObject.environment.SAS_HANDLER = `${offline ? serverlessPath : '/var/task'}/${originalHandler}`;
-    })
+        functionObject.environment.SAS_HANDLER = `${
+          offline ? serverlessPath : "/var/task"
+        }/${originalHandler}`;
+        functionObject.environment.SAS_ENABLED = `${
+          this.serverless.service.custom?.["serverless-async-storage"]
+            ?.enabled ?? false
+        }`;
+      });
   }
 }

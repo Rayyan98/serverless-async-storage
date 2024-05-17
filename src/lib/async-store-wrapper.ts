@@ -1,12 +1,22 @@
 import { asyncLocalStorage } from "./store";
+import { StoreFactory, StoreTypeEnum } from "./store-factory";
 
 export function asyncStoreWrapper(...args: unknown[]) {
-  return asyncLocalStorage.run({}, () => {
-    const splits = process.env.SAS_HANDLER!.split('.');
-    const handlerName = splits.pop()!;
-    const filePath = splits.join('.');
+  const pluginEnabled = process.env.SAS_ENABLED === "true";
+  const splits = process.env.SAS_HANDLER!.split(".");
+  const handlerName = splits.pop()!;
+  const filePath = splits.join(".");
+  const fileModule = require(`${filePath}`);
+  const handler = fileModule[handlerName];
 
-    const handler = require(`${filePath}`)[handlerName];
-    return handler(...args);
-  })
+  return asyncLocalStorage.run(
+    StoreFactory.getStore(
+      pluginEnabled
+        ? StoreTypeEnum.TransientStore
+        : StoreTypeEnum.PerpetualStore
+    ),
+    () => {
+      return handler(...args);
+    }
+  );
 }
